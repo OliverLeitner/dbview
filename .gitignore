@@ -4,3 +4,4 @@
 /libs/vendor
 /libs/composer.lock
 /templates/cache
+/view/styles/main.css

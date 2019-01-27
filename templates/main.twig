@@ -21,7 +21,7 @@
             editableGrid = new EditableGrid("TableDataJSON"); 
             // initial load: no menu item clicked
             loadTableToGrid(editableGrid,'data.php','','datatable');
-		} 
+        } 
 	</script>
 </head>
 
@@ -36,9 +36,13 @@
                     <h1 class="menutitle">Tables</h1>
                     <ul class="menu">
                         {% for table in tables %}
-                        <li class="menuitem"><a 
-                            href="#" 
-                            onclick="javascript:loadTableToGrid(editableGrid,'data.php','{{ table }}', 'datatable');" 
+                        <li class="menuitem cur_{{ table }}"><a 
+                            href="#{{ table }}" 
+                            onclick="
+                            javascript:loadTableToGrid(editableGrid,'data.php','{{ table }}', 'datatable');
+                            var elems = document.querySelectorAll('.menuitem');
+                            [].forEach.call(elems, (el) => { el.classList.remove('active'); });
+                            document.querySelector('.cur_{{ table }}').classList.add(['active']);" 
                             class="link">{{ table }}</a>
                         </li>
                         {% endfor %}
