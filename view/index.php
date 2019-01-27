@@ -5,13 +5,13 @@
  */
 // loading the required libs
 $rootpath = dirname(dirname(__FILE__));
-$dbview_config = json_decode(file_get_contents($rootpath."/config/config.json"));
+$dbview_config = json_decode(file_get_contents($rootpath."/config/config.json"),JSON_UNESCAPED_UNICODE);
 require_once "../libs/class.database.php";
 require_once "../libs/class.templating.php";
 require_once "../libs/class.views.php";
 // binding the required classes
 $views = new dbview\views\viewManager;
-$database = new dbview\database\databaseManager($dbview_config->connection_config);
+$database = new dbview\database\databaseManager($dbview_config["connection_config"]);
 $templates = new dbview\templating\templateManager;
 // twig logic
 require_once '../libs/vendor/autoload.php';
@@ -25,11 +25,13 @@ $twig = new Twig_Environment($loader, [
 ]);
 // table names for menu
 $tables = [];
-foreach ($dbview_config->tables->table_names as $key => $value) {
+foreach ($dbview_config["tables"]["table_names"] as $key => $value) {
     $tables[] = $key;
 }
+// defaults
+$table = array_keys($dbview_config["tables"]["table_names"])[0];
 // output
 echo $twig->render(
     'main.twig',
-    ["tabledata" => $database->getAllFromTable("Customers"), "tables" => $tables],
+    ["tabledata" => $database->getAllFromTable($table), "tables" => $tables],
 );

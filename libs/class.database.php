@@ -15,14 +15,14 @@ class databaseManager {
      *
      * @param object $config contains the app configuration
      */
-    public function __construct(object $config){
+    public function __construct(array $config){
         // con stuff
-        $this->database = (string) $config->database;
-        $this->dsn = (string) $config->protocol.":".$config->hostname.",".$config->port;
+        $this->database = (string) $config["database"];
+        $this->dsn = (string) $config["protocol"].":".$config["hostname"].",".$config["port"];
         $this->con = array(
             "Database" => $this->database,
-            "UID" => (string) $config->username,
-            "PWD" => (string) $config->password,
+            "UID" => (string) $config["username"],
+            "PWD" => (string) $config["password"],
             "CharacterSet" => "UTF-8",
             "MultipleActiveResultSets" => TRUE,
             "ConnectionPooling" => TRUE,
@@ -45,7 +45,7 @@ class databaseManager {
         if (count($fieldnames) > 0) {
             $fieldlist = implode(",", $fieldnames);
         }
-        $tsql = "SET NOCOUNT ON;SELECT ".$fieldlist." FROM [".$tablename."]";
+        $tsql = "SET NOCOUNT ON;SELECT ".$fieldlist." FROM [dbo].[".$tablename."]";
         $res = \sqlsrv_query($this->_livecon, $tsql);
         if ($this->checkConnectionResults($res)) {
             $output = array();
