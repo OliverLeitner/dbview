@@ -1,0 +1,41 @@
+{"metadata":[
+	{% for key, val in tabledata[0] %}
+	{
+		"name": "{{ key }}",
+		"label": "{{ key }}",
+		"datatype": "string",
+		"editable": true
+	{% if loop.last %}
+	}
+	{% else %}
+	},
+	{% endif %}
+	{% endfor %}
+],
+
+"data":[
+	{% for val in tabledata %}
+	{ 
+		{% if loop.first %}
+		{% for skey, sval in val %}
+		{% if loop.first %}
+		"id": "{{ skey }}",
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		"values": {
+			{% for skey, sval in val %}
+			{% if loop.last %}
+			"{{ skey }}": "{{ sval }}"
+			{% else %}
+			"{{ skey }}": "{{ sval }}",
+			{% endif %}
+			{% endfor %}
+		}
+	{% if loop.last %}
+	}
+	{% else %}
+	},
+	{% endif %}
+	{% endfor %}
+]}

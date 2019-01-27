@@ -1,0 +1,22 @@
+{
+    "connection_config": {
+        "database": "databasename",
+        "username": "sa",
+        "password": "password",
+        "protocol": "tcp",
+        "port": "1433",
+        "hostname": "localhost"
+    },
+
+    "tables": {
+        "table_names": {
+            "Customers": {
+                "table_fields": [
+                    "field1",
+                    "field2",
+                    "field3"
+                ]
+            }
+        }
+    }
+}
