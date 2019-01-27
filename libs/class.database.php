@@ -46,7 +46,14 @@ class databaseManager {
         if ($this->checkConnectionResults($res)) {
             $output = array();
             while ($row = \sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC)) {
-                $output[] = $row;
+                // in our usecase, only non objects or non arrays make sense on edit
+                $rowdata = null;
+                foreach ($row AS $outrow => $outvalue) {
+                    if (!is_object($outvalue) && !is_array($outvalue)) {
+                        $rowdata[$outrow] = $outvalue;
+                    }
+                }
+                $output[] = $rowdata;
             }
             return $output;
         } else {
