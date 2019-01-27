@@ -7,7 +7,7 @@ $dbview_config = json_decode(file_get_contents($rootpath."/config/config.json"),
 
 $table = (string) "";
 if ($_GET && $_GET["table"]) {
-    $table = $_GET["table"];
+    $table = strip_tags(urlencode($_GET["table"]));
 } else {
     $table = array_keys($dbview_config["tables"]["table_names"])[0];
 }
