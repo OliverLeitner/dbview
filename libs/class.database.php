@@ -40,8 +40,12 @@ class databaseManager {
      * @param string $tablename name of the table to grab the data off
      * @return mixed array of resulting rows
      */
-    public function getAllFromTable(string $tablename) {
-        $tsql = "SELECT * FROM [".$tablename."]";
+    public function getAllFromTable(string $tablename, $fieldnames = []) {
+        $fieldlist = (string) "*";
+        if (count($fieldnames) > 0) {
+            $fieldlist = implode(",", $fieldnames);
+        }
+        $tsql = "SET NOCOUNT ON;SELECT ".$fieldlist." FROM [".$tablename."]";
         $res = \sqlsrv_query($this->_livecon, $tsql);
         if ($this->checkConnectionResults($res)) {
             $output = array();

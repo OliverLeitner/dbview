@@ -10,6 +10,7 @@ if ($_GET && $_GET["table"]) {
 }
 $rootpath = dirname(dirname(__FILE__));
 $dbview_config = json_decode(file_get_contents($rootpath."/config/config.json"));
+$dbview_tablefields = $dbview_config->tables->table_names->$table->table_fields;
 require_once "../libs/class.database.php";
 // binding the required classes
 $database = new dbview\database\databaseManager($dbview_config->connection_config);
@@ -27,5 +28,5 @@ $twig = new Twig_Environment($loader, [
 header("Content-type:application/json; charset=utf-8");
 echo $twig->render(
     'data.twig',
-    ["tabledata" => $database->getAllFromTable($table)],
+    ["tabledata" => $database->getAllFromTable($table, $dbview_tablefields)],
 );
