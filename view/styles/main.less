@@ -19,13 +19,14 @@ html {
             left: 0;
             width: 100%;
             height: 200px;
-            background: #000 url("../images/bg-code.jpg") no-repeat center center fixed;
+            background: #000 url("../images/bg-code.jpg") top right no-repeat;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg-code.jpg', sizingMethod='scale');
             -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg-code.jpg', sizingMethod='scale')";
             background-size: cover;
+            background-attachment:fixed;
             z-index: 100;
             color: #fff;
             text-align: center;
@@ -34,6 +35,11 @@ html {
                 margin: 0;
                 padding: 0;
                 margin-top: 80px;
+
+                a {
+                    color: #fff;
+                    text-decoration: none;
+                }
             }
         }
 
@@ -71,6 +77,7 @@ html {
                             padding-right: 10px;
 
                             a {
+                                display:block;
                                 text-decoration: none;
                                 color: #000;
                             }
@@ -101,7 +108,7 @@ html {
 
             /* editablegrid styles */
             table.datagrid { border-collapse: collapse; border: 1px solid #CCB; width: 100%; margin-bottom: 100px; }
-			table.datagrid td, table.testgrid th { padding: 5px; border: 1px solid #E0E0E0; }
+			table.datagrid td, table.datagrid th { padding: 5px; border: 1px solid #E0E0E0; }
             table.datagrid th { background: #E5E5E5; text-align: left; }
 			input.invalid { background: red; color: #FDFDFD; }
         }

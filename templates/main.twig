@@ -28,7 +28,7 @@
 <body>
     <div class="content">
         <div class="header">
-            <h1>Table filler</h1>
+            <h1><a href="/dbview/">Table filler</a></h1>
         </div>
         <div class="maincontent">
             <div class="leftarea">
@@ -37,7 +37,7 @@
                     <ul class="menu">
                         {% for table in tables %}
                         <li class="menuitem cur_{{ table }}"><a 
-                            href="#{{ table }}" 
+                            href="#/{{ table }}" 
                             onclick="
                             javascript:loadTableToGrid(editableGrid,'data.php','{{ table }}', 'datatable');
                             var elems = document.querySelectorAll('.menuitem');

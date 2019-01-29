@@ -5,7 +5,7 @@
         "password": "password",
         "protocol": "tcp",
         "port": "1433",
-        "hostname": "localhost"
+        "hostname": "127.0.0.1"
     },
 
     "tables": {
