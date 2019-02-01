@@ -33,8 +33,7 @@ $twig = new Twig_Environment($loader, [
     'charset' => 'utf-8',
 ]);
 // output
-// header("Content-type:application/json; charset=utf-8");
-// strip all new lines off of the json on the fly
+header("Content-type:application/json; charset=utf-8");
 echo $twig->render(
     'data.twig',
     [
