@@ -12,6 +12,13 @@ if ($_GET && $_GET["table"]) {
     $table = array_keys($dbview_config["tables"]["table_names"])[0];
 }
 $dbview_tablefields = $dbview_config["tables"]["table_names"][$table]["table_fields"];
+
+// choose a config based on the fact if theres one...
+$tableconfig = false;
+if ($dbview_tablefields) {
+    $tableconfig = $dbview_tablefields[0];
+}
+
 require_once "../libs/class.database.php";
 // binding the required classes
 $database = new dbview\database\databaseManager($dbview_config["connection_config"]);
@@ -26,8 +33,12 @@ $twig = new Twig_Environment($loader, [
     'charset' => 'utf-8',
 ]);
 // output
-header("Content-type:application/json; charset=utf-8");
+// header("Content-type:application/json; charset=utf-8");
+// strip all new lines off of the json on the fly
 echo $twig->render(
     'data.twig',
-    ["tabledata" => $database->getAllFromTable($table, $dbview_tablefields)],
+    [
+        "tabledata" => $database->getAllFromTable($table, $dbview_tablefields),
+        "tableconfig" => $tableconfig,
+    ],
 );

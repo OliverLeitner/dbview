@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>main template</title>
+    <link rel="stylesheet" href="scripts/editablegrid/editablegrid.css" type="text/css" media="screen">
     <link href="styles/main.css" rel="stylesheet" type="text/css" />
+    <!-- only need to load jquery if cross table content in a dropdown is used on editing... -->
+    <!-- config.json "values" -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="scripts/editablegrid/editablegrid.js"></script>
     <script src="scripts/editablegrid/editablegrid_renderers.js"></script>
     <script src="scripts/editablegrid/editablegrid_editors.js"></script>
@@ -15,7 +19,6 @@
     <script src="scripts/editablegrid/editablegrid_charts.js"></script>
     <script src="scripts/csv.js"></script>
     <script src="scripts/xhr.js"></script>
-    <link rel="stylesheet" href="scripts/editablegrid/editablegrid.css" type="text/css" media="screen">
     <script>
 		window.onload = function() {
             editableGrid = new EditableGrid("TableDataJSON"); 
