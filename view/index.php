@@ -30,8 +30,17 @@ foreach ($dbview_config["tables"]["table_names"] as $key => $value) {
 }
 // defaults
 $table = array_keys($dbview_config["tables"]["table_names"])[0];
+// choose a config based on the fact if theres one...
+$tableconfig = false;
+if ($table) {
+    $tableconfig = $dbview_config["tables"]["table_names"][$table]["table_fields"][0];
+}
 // output
 echo $twig->render(
     'main.twig',
-    ["tabledata" => $database->getAllFromTable($table), "tables" => $tables],
+    [
+        "tabledata" => $database->getAllFromTable($table),
+        "tables" => $tables,
+        "tableconfig" => $tableconfig
+    ],
 );
