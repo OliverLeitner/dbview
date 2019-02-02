@@ -92,8 +92,6 @@ class viewManager
         $sel_fieldname = $this->table_names[$table_name]["selector_field"];
         // cross values catcher
         $cross_values = [];
-        // cross key catcher
-        $cross_key = null;
 
         // better than two foreach loops
         do {
@@ -102,12 +100,10 @@ class viewManager
             if (is_array($entry) && (array_keys($entry)[0] === $sel_fieldname)) {
                 // id = val
                 $cross_values[array_values($entry)[0]] = array_values($entry)[1];
-                // key -> [id:val, id:val...]
-                $cross_key = array_keys($entry)[1];
             }
         } while ($entry);
 
         // put everything together...
-        $this->subdata[$key][$cross_key] = $cross_values;
+        $this->subdata[$key][$table_name] = $cross_values;
     }
 }
