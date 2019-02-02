@@ -35,23 +35,24 @@ class viewManager
      * call this from views to get all the dropdowns
      *
      * @param [type] $fields a list of table fields to read from
-     * @return array of collected data to put onto the maindata for output
+     * @return array / false of collected data to put onto the maindata for output
      */
     public function buildDropDown($fields)
     {
         // read the fields array, and collect dropdown data
         if (is_array($fields) && $fields[0]) {
             foreach ($fields[0] as $key => $value) {
-                $this->subdata[$key] = null; // prepping the subarray to put the dropdown data on
                 if (is_array($value) && $value[$this->filterField]) {
+                    $this->subdata[$key] = null; // prepping the subarray to put the dropdown data on
                     $this->dropDownBuilder($key, $value);
                 }
             }
+            // return the filtered info
+            if (is_array($this->subdata) && count($this->subdata) > 0) {
+                return $this->subdata;
+            }
         }
-        // return the filtered info
-        if (is_array($this->subdata) && count($this->subdata) > 0) {
-            return $this->subdata;
-        }
+        return false;
     }
 
     /**
@@ -66,20 +67,13 @@ class viewManager
     protected function dropDownBuilder($key, $value)
     {
         foreach ($value[$this->filterField] as $skey => $sval) {
-            if (!is_array($sval)) {
-                if (in_array($skey, $this->filterTypes)) {
-                    // cross table data origin hook
-                    if ($skey === $this->filterTypes[2]) {
-                        $type = $this->filterTypes[1];
-                        $table_name = $sval;
-                        $dbdata = $this->dbhandler->getAllFromTable(
-                            $table_name,
-                            $this->table_names[$table_name]["table_fields"]
-                        );
-                        $this->dropDownFromDBDataBuilder($dbdata, $key, $table_name);
-                    }
-                }
-            }
+            if ($skey === $this->filterTypes[2]) { // table_name
+                $dbdata = $this->dbhandler->getAllFromTable(
+                        $sval,
+                        $this->table_names[$sval]["table_fields"]
+                    );
+                $this->dropDownFromDBDataBuilder($dbdata, $key, $sval);
+            } // TODO: funct source logic appends here...
         }
     }
 

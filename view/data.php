@@ -60,7 +60,7 @@ if (is_array($tableconfig)) {
 }
 
 // output
-//header("Content-type:application/json; charset=utf-8");
+header("Content-type:application/json; charset=utf-8");
 echo $twig->render(
     'data.twig',
     [
