@@ -3,7 +3,9 @@
  * database functionality
  */
 namespace dbview\database;
-class databaseManager {
+
+class databaseManager
+{
     // some base stuff
     protected $dsn = "";
     protected $con = null;
@@ -15,7 +17,8 @@ class databaseManager {
      *
      * @param object $config contains the app configuration
      */
-    public function __construct(array $config){
+    public function __construct(array $config)
+    {
         // con stuff
         $this->database = (string) $config["database"];
         $this->dsn = (string) $config["protocol"].":".$config["hostname"].",".$config["port"];
@@ -24,8 +27,8 @@ class databaseManager {
             "UID" => (string) $config["username"],
             "PWD" => (string) $config["password"],
             "CharacterSet" => "UTF-8",
-            "MultipleActiveResultSets" => TRUE,
-            "ConnectionPooling" => TRUE,
+            "MultipleActiveResultSets" => true,
+            "ConnectionPooling" => true,
         );
         $this->_livecon = \sqlsrv_connect($this->dsn, $this->con);
 
@@ -40,9 +43,10 @@ class databaseManager {
      * @param string $tablename name of the table to grab the data off
      * @return mixed array of resulting rows
      */
-    public function getAllFromTable(string $tablename, $fieldnames = []) {
+    public function getAllFromTable(string $tablename, $fieldnames = [])
+    {
         $fieldlist = (string) "*";
-        if (count($fieldnames) > 0) {
+        if (is_array($fieldnames) && count($fieldnames) > 0) {
             $fieldlist = implode(",", array_keys($fieldnames[0]));
         }
         $tsql = "SET NOCOUNT ON;SELECT ".$fieldlist." FROM [dbo].[".$tablename."]";
@@ -52,7 +56,7 @@ class databaseManager {
             while ($row = \sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC)) {
                 // in our usecase, only non objects or non arrays make sense on edit
                 $rowdata = null;
-                foreach ($row AS $outrow => $outvalue) {
+                foreach ($row as $outrow => $outvalue) {
                     if (!is_object($outvalue) && !is_array($outvalue)) {
                         $rowdata[$outrow] = $outvalue;
                     }
@@ -71,7 +75,8 @@ class databaseManager {
      * @param [type] $results the resource to test
      * @return boolean if the resource is valid or not
      */
-    protected function checkConnectionResults($results) {
+    protected function checkConnectionResults($results)
+    {
         if (!is_resource($results)) {
             return \sqlsrv_errors();
         } else {
