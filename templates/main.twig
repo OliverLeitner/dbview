@@ -39,15 +39,18 @@
                     <h1 class="menutitle">Tables</h1>
                     <ul class="menu">
                         {% for table in tables %}
-                        <li class="menuitem cur_{{ table }}"><a 
-                            href="#/{{ table }}" 
+                        {% if table["values"].in_menu %}
+                        {% set table_name = table["name"] %}
+                        <li class="menuitem cur_{{ table_name }}"><a 
+                            href="#/{{ table_name }}" 
                             onclick="
-                            javascript:loadTableToGrid(editableGrid,'data.php','{{ table }}', 'datatable');
+                            javascript:loadTableToGrid(editableGrid,'data.php','{{ table_name }}', 'datatable');
                             var elems = document.querySelectorAll('.menuitem');
                             [].forEach.call(elems, (el) => { el.classList.remove('active'); });
-                            document.querySelector('.cur_{{ table }}').classList.add(['active']);" 
-                            class="link">{{ table }}</a>
+                            document.querySelector('.cur_{{ table_name }}').classList.add(['active']);" 
+                            class="link">{{ table_name }}</a>
                         </li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>

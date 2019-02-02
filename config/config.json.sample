@@ -11,12 +11,15 @@
     "tables": {
         "table_names": {
             "Customers": {
+                "in_menu": true,
+                "selector_field": "ID",
                 "table_fields": [
                     "field1": {
                         "label" : "somelabel",
                         "datatype" : "string",
                         "editable" : true,
                         "values" : {
+                            "type": "enum",
                             "valuegroup1" : {"valkey1": "value1","valkey2": "value2"}
                         }
                     },
@@ -24,7 +27,10 @@
                         "label" : "somelabel2",
                         "datatype" : "integer",
                         "editable" : false,
-                        "values" : false
+                        "values" : {
+                            "type": "table",
+                            "table_name": "tablename"
+                        }
                     },
                     "field3": {
                         "label" : "somelabel3",

@@ -26,7 +26,7 @@ $twig = new Twig_Environment($loader, [
 // table names for menu
 $tables = [];
 foreach ($dbview_config["tables"]["table_names"] as $key => $value) {
-    $tables[] = $key;
+    $tables[] = ["name" => $key, "values" => $value];
 }
 // defaults
 $table = array_keys($dbview_config["tables"]["table_names"])[0];

@@ -21,26 +21,32 @@
 		{% if tableconfig and tableconfig[key] and tableconfig[key].values != false %}
 			"values": {
 			{% for key, val in tableconfig[key].values %}
+				{% if key != 'type'  and key != 'table_name' %}
 				{% if loop.last %}
 				"{{ key }}" : {
 					{% for skey, sval in val %}
-						{% if loop.last %}
-						"{{ skey }}" : "{{ sval }}"
-						{% else %}
-						"{{ skey }}" : "{{ sval }}",
+						{% if skey != 'in_menu' and skey != 'selector_field' %}
+							{% if loop.last %}
+							"{{ skey }}" : "{{ sval }}"
+							{% else %}
+							"{{ skey }}" : "{{ sval }}",
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				}
 				{% else %}
 				"{{ key }}" : {
 					{% for skey, sval in val %}
-						{% if loop.last %}
-						"{{ skey }}" : "{{ sval }}"
-						{% else %}
-						"{{ skey }}" : "{{ sval }}",
+						{% if skey != 'in_menu' and skey != 'selector_field' %}
+							{% if loop.last %}
+							"{{ skey }}" : "{{ sval }}"
+							{% else %}
+							"{{ skey }}" : "{{ sval }}",
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				},
+				{% endif %}
 				{% endif %}
 				{% endfor %}
 				}
