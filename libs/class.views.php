@@ -40,7 +40,7 @@ class viewManager
     public function buildDropDown($fields)
     {
         // read the fields array, and collect dropdown data
-        if (is_array($fields) && $fields[0]) {
+        if ($fields && is_array($fields) && $fields[0]) {
             foreach ($fields[0] as $key => $value) {
                 if (is_array($value) && $value[$this->filterField]) {
                     $this->subdata[$key] = null; // prepping the subarray to put the dropdown data on
