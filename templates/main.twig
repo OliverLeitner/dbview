@@ -41,13 +41,8 @@
                         {% for table in tables %}
                         {% if table["values"].in_menu %}
                         {% set table_name = table["name"] %}
-                        <li class="menuitem cur_{{ table_name }}"><a 
+                        <li class="menuitem" id="cur_{{ table_name }}"><a 
                             href="#/{{ table_name }}" 
-                            onclick="
-                            javascript:loadTableToGrid(editableGrid,'data.php','{{ table_name }}', 'datatable');
-                            var elems = document.querySelectorAll('.menuitem');
-                            [].forEach.call(elems, (el) => { el.classList.remove('active'); });
-                            document.querySelector('.cur_{{ table_name }}').classList.add(['active']);" 
                             class="link">{{ table_name }}</a>
                         </li>
                         {% endif %}
@@ -63,6 +58,10 @@
             <p>my footer</p>
         </div>
     </div>
+    <script type="text/javascript" src="scripts/events.js"></script>
+    <script type="text/javascript">
+        stateHandler("menuitem");
+    </script>
 </body>
 
 </html>
