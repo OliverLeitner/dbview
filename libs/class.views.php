@@ -95,18 +95,19 @@ class viewManager
         // cross key catcher
         $cross_key = null;
 
-        foreach ($dbdata as $dkey => $dval) {
-            foreach ($dval as $ckey => $cval) {
-                if ($ckey === $sel_fieldname) {
-                    // ids to select on html select option
-                    $selval = $cval;
-                } else {
-                    // names to show in the dropdown
-                    $cross_values[$selval] = trim($cval);
-                }
-                $cross_key = $ckey;
+        // better than two foreach loops
+        do {
+            $entry = array_shift($dbdata);
+            // only works on selection_field entries defined in json
+            if (is_array($entry) && (array_keys($entry)[0] === $sel_fieldname)) {
+                // id = val
+                $cross_values[array_values($entry)[0]] = array_values($entry)[1];
+                // key -> [id:val, id:val...]
+                $cross_key = array_keys($entry)[1];
             }
-            $this->subdata[$key][$cross_key] = $cross_values;
-        }
+        } while ($entry);
+
+        // put everything together...
+        $this->subdata[$key][$cross_key] = $cross_values;
     }
 }
