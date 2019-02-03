@@ -29,6 +29,7 @@ class databaseManager
             "CharacterSet" => "UTF-8",
             "MultipleActiveResultSets" => true,
             "ConnectionPooling" => true,
+            "ReturnDatesAsStrings" => true,
         );
         $this->_livecon = \sqlsrv_connect($this->dsn, $this->con);
 
@@ -54,12 +55,9 @@ class databaseManager
         if ($this->checkConnectionResults($res)) {
             $output = array();
             while ($row = \sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC)) {
-                // in our usecase, only non objects or non arrays make sense on edit
                 $rowdata = [];
                 array_map(function ($key, $data) use (&$rowdata) {
-                    if (!is_array($data) && !is_object($data)) {
-                        $rowdata[$key] = $data;
-                    }
+                    $rowdata[$key] = $data;
                 }, array_keys($row), array_values($row));
                 $output[] = $rowdata;
             }
