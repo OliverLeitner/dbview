@@ -93,15 +93,13 @@ class viewManager
         // cross values catcher
         $cross_values = [];
 
-        // better than two foreach loops
-        do {
-            $entry = array_shift($dbdata);
-            // only works on selection_field entries defined in json
+        // shortest version of combination yet
+        // use returns the filled vals back to the calling function, so to here...
+        array_walk($dbdata, function ($entry) use (&$cross_values, &$sel_fieldname) {
             if (is_array($entry) && (array_keys($entry)[0] === $sel_fieldname)) {
-                // id = val
                 $cross_values[array_values($entry)[0]] = array_values($entry)[1];
             }
-        } while ($entry);
+        });
 
         // put everything together...
         $this->subdata[$key][$table_name] = $cross_values;
