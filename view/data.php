@@ -14,7 +14,7 @@ $table = (string) "";
 if ($_GET && $_GET["table"]) {
     $table = urlencode(strip_tags($_GET["table"]));
 } else {
-    $table = array_keys($dbview_config["tables"]["table_names"])[0];
+    $table = array_key_first($dbview_config["tables"]["table_names"]);
 }
 
 // making the table field properties more accessible

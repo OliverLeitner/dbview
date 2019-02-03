@@ -46,7 +46,7 @@ class databaseManager
     public function getAllFromTable(string $tablename, $fieldnames = [])
     {
         $fieldlist = (string) "*";
-        if (is_array($fieldnames) && count($fieldnames) > 0) {
+        if (is_countable($fieldnames) && count($fieldnames) > 0) {
             $fieldlist = implode(",", array_keys($fieldnames[0]));
         }
         $tsql = "SET NOCOUNT ON;SELECT ".$fieldlist." FROM [dbo].[".$tablename."]";

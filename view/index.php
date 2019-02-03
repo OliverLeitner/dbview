@@ -24,12 +24,11 @@ $twig = new Twig_Environment($loader, [
 ]);
 // table names for menu
 $tables = [];
-foreach ($dbview_config["tables"]["table_names"] as $key => $value) {
-    $tables[] = ["name" => $key, "values" => $value];
-}
+array_map(function ($tkey, $tval) use (&$tables) {
+    array_push($tables, ["name" => $tkey, "values" => $tval]);
+}, array_keys($dbview_config["tables"]["table_names"]), array_values($dbview_config["tables"]["table_names"]));
 // defaults
-$table = array_keys($dbview_config["tables"]["table_names"])[0];
-
+$table = array_key_first($dbview_config["tables"]["table_names"]);
 // choose a config based on the fact if theres one...
 $tableconfig = false;
 if ($table) {
