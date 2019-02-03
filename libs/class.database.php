@@ -55,12 +55,12 @@ class databaseManager
             $output = array();
             while ($row = \sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC)) {
                 // in our usecase, only non objects or non arrays make sense on edit
-                $rowdata = null;
-                foreach ($row as $outrow => $outvalue) {
-                    if (!is_object($outvalue) && !is_array($outvalue)) {
-                        $rowdata[$outrow] = $outvalue;
+                $rowdata = [];
+                array_map(function ($key, $data) use (&$rowdata) {
+                    if (!is_array($data) && !is_object($data)) {
+                        $rowdata[$key] = $data;
                     }
-                }
+                }, array_keys($row), array_values($row));
                 $output[] = $rowdata;
             }
             return $output;
