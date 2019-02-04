@@ -55,11 +55,7 @@ class databaseManager
         if ($this->checkConnectionResults($res)) {
             $output = array();
             while ($row = \sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC)) {
-                $rowdata = [];
-                array_map(function ($key, $data) use (&$rowdata) {
-                    $rowdata[$key] = $data;
-                }, array_keys($row), array_values($row));
-                $output[] = $rowdata;
+                $output[] = $row;
             }
             return $output;
         } else {
