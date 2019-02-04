@@ -20,12 +20,6 @@ if ($_GET && $_GET["table"]) {
 // making the table field properties more accessible
 $dbview_tablefields = $dbview_config["tables"]["table_names"][$table]["table_fields"];
 
-// choose a config based on the fact if theres one...
-$tableconfig = false;
-if ($dbview_tablefields) {
-    $tableconfig = $dbview_tablefields[0];
-}
-
 // putting together the output data
 $viewdata = new dbview\views\viewManager($dbview_config, $database, $table);
 
@@ -47,14 +41,17 @@ $maindata = $database->getAllFromTable($table, $dbview_tablefields);
 $subdata = $viewdata->buildDropDown($dbview_tablefields);
 
 // adding all subdata to the config
-if (is_array($tableconfig)) {
+// choose a config based on the fact if theres one...
+$tableconfig = false;
+if ($dbview_tablefields) {
+    $tableconfig = $dbview_tablefields[0];
     foreach ($tableconfig as $key => $value) {
         if ($value["values"] && is_array($subdata[$key])) {
-            foreach ($subdata[$key] as $cross_key => $cross_values) {
+            array_map(function ($cross_key, $cross_values) use (&$tableconfig, &$key) {
                 if (is_array($cross_values)) {
                     $tableconfig[$key]["values"][$cross_key] = $cross_values;
                 }
-            }
+            }, array_keys($subdata[$key]), $subdata[$key]);
         }
     }
 }

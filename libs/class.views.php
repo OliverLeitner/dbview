@@ -41,12 +41,12 @@ class viewManager
     {
         // read the fields array, and collect dropdown data
         if ($fields && $fields[0]) {
-            foreach ($fields[0] as $key => $value) {
+            array_map(function ($key, $value){
                 if ($value[$this->filterField]) {
-                    $this->subdata[$key] = null; // prepping the subarray to put the dropdown data on
+                    $this->subdata[$key] = null;
                     $this->dropDownBuilder($key, $value);
                 }
-            }
+            }, array_keys($fields[0]), $fields[0]);
             // return the filtered info
             if (is_countable($this->subdata)) {
                 return $this->subdata;
@@ -66,15 +66,15 @@ class viewManager
      */
     protected function dropDownBuilder($key, $value)
     {
-        foreach ($value[$this->filterField] as $skey => $sval) {
-            if ($skey === $this->filterTypes[2]) { // table_name
+        array_map(function ($skey, $sval) use (&$key, &$value) {
+            if ($skey === $this->filterTypes[2]) {
                 $dbdata = $this->dbhandler->getAllFromTable(
-                        $sval,
-                        $this->table_names[$sval]["table_fields"]
-                    );
+                    $sval,
+                    $this->table_names[$sval]["table_fields"],
+                );
                 $this->dropDownFromDBDataBuilder($dbdata, $key, $sval);
-            } // TODO: funct source logic appends here...
-        }
+            }
+        }, array_keys($value[$this->filterField]), $value[$this->filterField]);
     }
 
     /**
