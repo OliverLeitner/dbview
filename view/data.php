@@ -56,6 +56,8 @@ if ($dbview_tablefields) {
     }
 }
 
+// TODO: use php to generate json rather than twig...
+
 // output
 header("Content-type:application/json; charset=utf-8");
 echo $twig->render(
