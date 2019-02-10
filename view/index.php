@@ -6,21 +6,21 @@
 // loading the required libs
 $rootpath = dirname(dirname(__FILE__));
 $dbview_config = json_decode(file_get_contents($rootpath."/config/config.json"), JSON_UNESCAPED_UNICODE);
-require_once "../libs/class.database.php";
-require_once "../libs/class.templating.php";
-require_once "../libs/class.views.php";
+require_once $rootpath."/libs/class.database.php";
+require_once $rootpath."/libs/class.templating.php";
+require_once $rootpath."/libs/class.views.php";
 // binding the required classes
 $database = new dbview\database\databaseManager($dbview_config["connection_config"]);
 $templates = new dbview\templating\templateManager;
 // twig logic
-require_once '../libs/vendor/autoload.php';
-$loader = new Twig_Loader_Filesystem('../templates');
+require_once $rootpath."/libs/vendor/autoload.php";
+$loader = new Twig_Loader_Filesystem($rootpath."/templates");
 $twig = new Twig_Environment($loader, [
-    'cache' => '../templates/cache',
-    'debug' => true,
-    'auto_reload' => true,
-    'optimizations' => 1,
-    'charset' => 'utf-8',
+    "cache" => $rootpath."/templates/cache",
+    "debug" => true,
+    "auto_reload" => true,
+    "optimizations" => 1,
+    "charset" => "utf-8",
 ]);
 // table names for menu
 $tables = [];
@@ -39,10 +39,10 @@ if ($table) {
 }
 // output
 echo $twig->render(
-    'main.twig',
+    "main.twig",
     [
         "tabledata" => $database->getAllFromTable($table),
         "tables" => $tables,
         "tableconfig" => $tableconfig
-    ],
+    ]
 );
