@@ -4,6 +4,7 @@
  * output
  */
 // loading the required libs
+$start = microtime(true);
 $rootpath = dirname(dirname(__FILE__));
 $config = json_decode(file_get_contents($rootpath."/config/config.json"), JSON_UNESCAPED_UNICODE);
 require_once $rootpath."/libs/class.database.php";
@@ -38,11 +39,13 @@ if ($table) {
     $tableconfig = $config["tables"]["table_names"][$table]["table_fields"][0];
 }
 // output
+$time_elapsed_secs = microtime(true) - $start;
 echo $twig->render(
     "main.twig",
     [
         "tabledata" => $database->getAllFromTable($table),
         "tables" => $tables,
-        "tableconfig" => $tableconfig
+        "tableconfig" => $tableconfig,
+        "stat" => $time_elapsed_secs,
     ]
 );

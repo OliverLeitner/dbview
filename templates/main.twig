@@ -19,13 +19,6 @@
     <script src="scripts/editablegrid/editablegrid_charts.js"></script>
     <script src="scripts/csv.js"></script>
     <script src="scripts/xhr.js"></script>
-    <script>
-        window.onload = function() {
-            editableGrid = new EditableGrid("TableDataJSON"); 
-            // initial load: no menu item clicked
-            loadTableToGrid(editableGrid,'data.php','','datatable');
-        } 
-    </script>
 </head>
 
 <body>
@@ -60,7 +53,11 @@
     </div>
     <script type="text/javascript" src="scripts/events.js"></script>
     <script type="text/javascript">
-        stateHandler("menuitem");
+        editableGrid = new EditableGrid("TableDataJSON");
+        // adding an event onclick for the menu
+        stateHandler('menuitem', 'active', 'click');
+        // if one enters url with params in browser, route via js
+        routing('menuitem', 'active');
     </script>
 </body>
 
