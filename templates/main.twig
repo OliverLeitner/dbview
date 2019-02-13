@@ -57,7 +57,7 @@
         // adding an event onclick for the menu
         stateHandler('menuitem', 'active', 'click');
         // if one enters url with params in browser, route via js
-        routing('menuitem', 'active');
+        routing('menuitem', 'active', '{{ tables[0]["name"] }}');
     </script>
 </body>
 
