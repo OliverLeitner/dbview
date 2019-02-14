@@ -48,6 +48,13 @@ function routing(className = null, activeClass = null, table_name = "") {
     } else {
         // fallback, if no route supplied
         loadTableToGrid(editableGrid,"data.php",table,"datatable");
+        // https://stackoverflow.com/questions/3870057/how-can-i-update-window-location-hash-without-jumping-the-document
+        // adding parameter to url via javascript
+        if(history.pushState) {
+            history.pushState(null, null, '#/' + table);
+        } else {
+            location.hash = '#/' + table;
+        }
     }
     // activate current entry
     document.getElementById("cur_" + table).classList.add(activeClass);
