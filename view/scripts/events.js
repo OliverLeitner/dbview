@@ -10,7 +10,8 @@ function stateHandler(className = null, activeClass = null, eventType = null) {
             let elements = document.querySelectorAll("." + className);
             // remove active class from all li's
             if (elements) {
-                for (i = 0; i < elements.length; i++) {
+                const arrayLength = elements.length;
+                for (i = 0; i < arrayLength; i++) {
                     elements[i].classList.remove(activeClass);
                 }
             }
@@ -33,7 +34,8 @@ function routing(className = null, activeClass = null, table_name = "") {
     // unselect currently selected menu entry, if avail
     let elements = document.querySelectorAll("." + className);
     if (elements) {
-        for (i = 0; i < elements.length; i++) {
+        const arrayLength = elements.length;
+        for (let i = 0; i < arrayLength; i++) {
             elements[i].classList.remove(activeClass);
         }
     }
