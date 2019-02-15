@@ -67,4 +67,4 @@ $config = [
 $tidy = new tidy;
 $tidy->parseString($output, $config, "utf8");
 $tidy->cleanRepair();
-echo $tidy;
+echo '<!DOCTYPE html>' . PHP_EOL . $tidy;
