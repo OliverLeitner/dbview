@@ -40,7 +40,7 @@ if ($table) {
 }
 // output
 $time_elapsed_secs = microtime(true) - $start;
-echo $twig->render(
+$output = $twig->render(
     "main.twig",
     [
         "tabledata" => $database->getAllFromTable($table),
@@ -49,3 +49,14 @@ echo $twig->render(
         "stat" => $time_elapsed_secs,
     ]
 );
+
+// TODO: move tidy off
+// Specify configuration
+$config = array(
+    'indent'         => true,
+    'output-xhtml'   => true,
+    'wrap'           => 200);
+$tidy = new tidy;
+$tidy->parseString($output, $config, "utf8");
+$tidy->cleanRepair();
+echo $tidy;
