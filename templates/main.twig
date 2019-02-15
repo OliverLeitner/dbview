@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>main template</title>
+    <meta name="robots" content="noindex,nofollow">
+    <title>dbview</title>
     <link rel="stylesheet" href="scripts/editablegrid/editablegrid.css" type="text/css" media="screen">
-    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+    <link href="styles/main.css" rel="stylesheet" type="text/css" media="screen">
 </head>
 
 <body>
@@ -18,7 +19,7 @@
         <main>
             <nav>
                 <div class="dbmenu">
-                    <h1 class="menutitle">Tables</h1>
+                    <h2 class="menutitle">Tables</h2>
                     <ul class="menu">
                         {% for table in tables %}
                         {% if table["values"].in_menu %}
@@ -33,7 +34,10 @@
                 </div>
             </nav>
             <article>
-                <section id="datatable"></section>
+                <h2>Content</h2>
+                <section id="datatable">
+                    <h3>Data</h3>
+                </section>
             </article>
         </main>
         <footer>
@@ -51,8 +55,8 @@
     <script src="scripts/editablegrid/editablegrid_charts.js"></script>
     <script src="scripts/csv.js"></script>
     <script src="scripts/xhr.js"></script>
-    <script type="text/javascript" src="scripts/events.js"></script>
-    <script type="text/javascript">
+    <script src="scripts/events.js"></script>
+    <script>
         editableGrid = new EditableGrid("TableDataJSON");
         // adding an event onclick for the menu
         stateHandler('menuitem', 'active', 'click');
