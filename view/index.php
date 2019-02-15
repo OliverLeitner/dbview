@@ -52,10 +52,18 @@ $output = $twig->render(
 
 // TODO: move tidy off
 // Specify configuration
-$config = array(
-    'indent'         => true,
-    'output-xhtml'   => true,
-    'wrap'           => 200);
+$config = [
+    'clean'       => TRUE,
+    'doctype'     => 'omit',
+    'indent'      => 2, // auto
+    'output-html' => TRUE,
+    'tidy-mark'   => FALSE,
+    'wrap'        => 0,
+    // HTML5 tags
+    'new-blocklevel-tags' => 'article aside audio bdi canvas details dialog figcaption figure footer header hgroup main menu menuitem nav section source summary template track video',
+    'new-empty-tags' => 'command embed keygen source track wbr',
+    'new-inline-tags' => 'audio command datalist embed keygen mark menuitem meter output progress source time video wbr',
+];
 $tidy = new tidy;
 $tidy->parseString($output, $config, "utf8");
 $tidy->cleanRepair();
