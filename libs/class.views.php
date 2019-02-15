@@ -34,8 +34,8 @@ class ViewManager
      * dropdown builder function
      * call this from views to get all the dropdowns
      *
-     * @param [type] $fields a list of table fields to read from
-     * @return array / false of collected data to put onto the maindata for output
+     * @param mixed $fields a list of table fields to read from
+     * @return mixed / false of collected data to put onto the maindata for output
      */
     public function buildDropDown($fields)
     {
@@ -60,8 +60,8 @@ class ViewManager
      * also separates if table source or enum source or funct source...
      * TODO: funct source
      *
-     * @param [type] $key the table name to add the dropdown to values
-     * @param [type] $value the properties of "values" to work on
+     * @param string $key the table name to add the dropdown to values
+     * @param mixed $value the properties of "values" to work on
      * @return void
      */
     protected function dropDownBuilder($key, $value)
@@ -81,9 +81,9 @@ class ViewManager
      * building up the key->value pairs for each dropdown data line
      * based upon type: table (data from database table)
      *
-     * @param [type] $dbdata the received dropdown result data
-     * @param [type] $key the key value (html select value)
-     * @param [type] $table_name the table name to get the data from
+     * @param mixed $dbdata the received dropdown result data
+     * @param object $key the key value (html select value)
+     * @param string $table_name the table name to get the data from
      * @return void
      */
     protected function dropDownFromDBDataBuilder($dbdata, $key, $tableName)
@@ -92,26 +92,86 @@ class ViewManager
         $selFieldname = $this->tablenames[$tableName]["selector_field"];
         // cross values catcher
         $crossValues = [];
-
         array_walk($dbdata, function ($entry) use (&$crossValues, &$selFieldname) {
             if (is_array($entry) && (array_keys($entry)[0] === $selFieldname)) {
                 $crossValues[array_values($entry)[0]] = array_values($entry)[1];
             }
         });
-
         // put everything together...
         $this->subdata[$key][$tableName] = $crossValues;
     }
 
     /**
      * trying to build a generic mapping funct for our usage
+     *
+     * @param mixed $keys max of two keys to be filled with data
+     * @param mixed $array the data array we are mapping from
+     * @param mixed $data the data we are appending our data to
+     * @param string $param the array key to map the data to
+     *
+     * @return mixed the mapped array
      */
-    protected function arrayMap($array, $data)
+    protected function arrayMap1D($array = [], $data = [], $keys = [], $param = "")
     {
         $iterator = 0;
-        array_map(function ($key, $val) use (&$data) {
-            $data[$iterator]["key"] = $key;
-            $data[$iterator]["value"] = $val;
+        $hasParam = false;
+        array_map(function ($value) use (&$keys, &$iterator, &$data, &$param, &$hasParam) {
+            // the default catcher
+            $data[$iterator][$keys[0]] = $value;
+            // predefine the keykeeper
+            $kval = null;
+            // if we got more than one keyelem to fill, we do so
+            if ($keys[1] && is_countable($value)) {
+                $kval = $value[array_key_first($value)];
+                $data[$iterator][$keys[0]] = $kval;
+                $data[$iterator][$keys[1]] = $value;
+            }
+            // if we got a param to append to, we use that
+            if ($param != "") {
+                $hasParam = true;
+                $data[$param][$iterator][$keys[0]] = $value;
+                if ($keys[1] && is_countable($value)) {
+                    $data[$param][$iterator][$keys[0]] = $kval;
+                    $data[$param][$iterator][$keys[1]] = $value;
+                }
+            }
+            $iterator++;
+        }, $array);
+        // remove garbage from first run, if param is set
+        if ($hasParam) {
+            unset($data[0]);
+        }
+        return $data;
+    }
+
+    /**
+     * trying to build a generic mapping funct for our usage
+     * the 2d version
+     *
+     * @param mixed $keys max of two keys to be filled with data
+     * @param mixed $array the data array we are mapping from
+     * @param mixed $data the data we are appending our data to
+     * @param string $param the array key to map the data to
+     *
+     * @return mixed the mapped array
+     */
+    protected function arrayMap2D($array = [], $data = [], $param = "")
+    {
+        $iterator = 0;
+        array_map(function ($key, $value) use (&$iterator, &$data, &$param) {
+            // the default catcher
+            $data[$iterator][$key] = $value;
+            // if we got a param to append to, we use that
+            if ($param != "") {
+                // some cleanup
+                if (isset($data[0])) {
+                    unset($data[0]);
+                }
+                if (isset($data[$iterator][$key])) {
+                    unset($data[$iterator][$key]);
+                }
+                $data[$param][$iterator][$key] = $value;
+            }
             $iterator++;
         }, array_keys($array), $array);
         return $data;
@@ -128,33 +188,15 @@ class ViewManager
             $tableconfig = $tablefields[0];
             foreach ($tableconfig as $key => $value) {
                 if ($value["values"] && is_array($subdata[$key])) {
-                    array_map(
-                        function ($crosskey, $crossvalues) use (&$tableconfig, &$key) {
-                            if (is_array($crossvalues)) {
-                                $tableconfig[$key]["values"][$crosskey] = $crossvalues;
-                            }
-                        },
-                        array_keys($subdata[$key]),
-                        $subdata[$key]
+                    $tableconfig[$key]["values"] = $this->arrayMap2D(
+                        $subdata[$key],
+                        $tableconfig[$key]["values"],
+                        $key
                     );
                 }
             }
         }
         return $tableconfig;
-    }
-
-    /**
-     * adds all the data to the output
-     */
-    protected function addDataToMain($mainkeeper, $maindata)
-    {
-        $iter = 0;
-        array_map(function ($entry) use (&$mainkeeper, &$iter) {
-            $mainkeeper["data"][$iter]["id"] = $entry[array_key_first($entry)];
-            $mainkeeper["data"][$iter]["values"] = $entry;
-            $iter++;
-        }, $maindata);
-        return $mainkeeper;
     }
 
     /**
@@ -186,9 +228,8 @@ class ViewManager
     {
         // adding dropdowns to data handler
         $tableconfig = $this->addSubData($tablefields, $subdata);
-
         // metadata part of the json
-        $mainkeeper = array();
+        $mainkeeper = null;
         $citer = 0;
         foreach (array_keys($maindata[0]) as $key) {
             $mainkeeper["metadata"][$citer]["name"] = $key;
@@ -210,10 +251,8 @@ class ViewManager
             }
             $citer++;
         }
-
         // adding data to output
-        $mainkeeper = $this->addDataToMain($mainkeeper, $maindata);
-
+        $mainkeeper = $this->arrayMap1D($maindata, $mainkeeper, ["id","values"], "data");
         // return the built up json
         return $mainkeeper;
     }
