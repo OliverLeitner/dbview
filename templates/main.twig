@@ -57,11 +57,19 @@
     <script src="scripts/xhr.js"></script>
     <script src="scripts/events.js"></script>
     <script>
-        editableGrid = new EditableGrid("TableDataJSON");
+        var editableGrid = new EditableGrid("TableDataJSON");
         // adding an event onclick for the menu
-        stateHandler('menuitem', 'active', 'click');
-        // if one enters url with params in browser, route via js
-        routing('menuitem', 'active', '{{ tables[0]["name"] }}');
+        if (
+            editableGrid &&
+            window.stateHandler &&
+            window.routing &&
+            typeof window.stateHandler === 'function' &&
+            typeof window.routing === 'function'
+           ) {
+            window.stateHandler('menuitem', 'active', 'click');
+            // if one enters url with params in browser, route via js
+            window.routing('menuitem', 'active', '{{ tables[0]["name"] }}');
+        }
     </script>
 </body>
 

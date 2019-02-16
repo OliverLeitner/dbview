@@ -1,33 +1,40 @@
 "use strict";
+
 /**
  * a simple event listener specific to certain element classes
  * TODO: split and generalize
  * @param {*} className the name of the class to get elements by
  * @param {*} eventType the event we are listening for
  */
-function stateHandler(className = null, activeClass = null, eventType = null) {
-    document.body.addEventListener(eventType, event => {
-        if (event.target.parentElement.classList.contains(className)) {
-            let elements = document.getElementsByClassName(className);
-            // remove active class from all li's
-            if (elements) {
-                const arrayLength = elements.length;
-                for (let i = 0; i < arrayLength; i++) {
-                    elements[i].classList.remove(activeClass);
+var stateHandler = function (className, activeClass, eventType) {
+    document.addEventListener(eventType, function(event) {
+        if (event.target) {
+            if (event.target.parentElement.classList.contains(className)) {
+                var elements = document.getElementsByClassName(className);
+                // remove active class from all li's
+                if (elements) {
+                    var arrayLength = elements.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        elements[i].classList.remove(activeClass);
+                    }
+                    // free some mem
+                    elements = null;
                 }
-                // free some mem
-                elements = null;
+                // add active class to current li
+                if (event.target.parentElement) {
+                    event.target.parentElement.classList.add([activeClass]);
+                    var table = event.target.parentElement.id.split("_")[1];
+                    // get the data for the body
+                    if (editableGrid && table) {
+                        loadTableToGrid(editableGrid, "data.php", table, "datatable");
+                        table = null;
+                    }
+                }
             }
-            // add active class to current li
-            event.target.parentElement.classList.add([activeClass]);
-            let table = event.target.parentElement.id.split("_")[1];
-            // get the data for the body
-            loadTableToGrid(editableGrid,"data.php",table,"datatable");
-            table = null;
         }
     });
     return true;
-}
+};
 
 /**
  * base js routing (incoming urls...)
@@ -35,39 +42,49 @@ function stateHandler(className = null, activeClass = null, eventType = null) {
  * @param {*} className the name of the ul class of the menu
  * @param {*} activeClass the class that highlights the current entry
  */
-function routing(className = null, activeClass = null, table_name = "") {
+var routing = function (className, activeClass, table_name) {
     // unselect currently selected menu entry, if avail
-    let elements = document.getElementsByClassName(className);
+    var elements = document.getElementsByClassName(className);
     if (elements) {
-        const arrayLength = elements.length;
-        for (let i = 0; i < arrayLength; i++) {
-            elements[i].classList.remove(activeClass);
+        var arrayLength = elements.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (elements[i]) {
+                elements[i].classList.remove(activeClass);
+            }
         }
         // free em'
         elements = null;
     }
     // activate the correct menu entry
-    let table = table_name;
+    var table = table_name;
     if (window.location.hash) {
         // if we got a param, add it to the request
-        let urlparam = window.location.hash;
-        let param = urlparam.split("/")[1];
+        var urlparam = window.location.hash;
+        var param = urlparam.split("/")[1];
+        if (param && table && editableGrid) {
         table = param;
-        loadTableToGrid(editableGrid,"data.php",table,"datatable");
+            loadTableToGrid(editableGrid,"data.php",table,"datatable");
+        }
     } else {
         // fallback, if no route supplied
-        loadTableToGrid(editableGrid,"data.php",table,"datatable");
-        // https://stackoverflow.com/questions/3870057/how-can-i-update-window-location-hash-without-jumping-the-document
-        // adding parameter to url via javascript
-        if(history.pushState) {
-            history.pushState(null, null, '#/' + table);
-        } else {
-            location.hash = '#/' + table;
+        if (table && editableGrid) {
+            loadTableToGrid(editableGrid,"data.php",table,"datatable");
+            // https://stackoverflow.com/questions/3870057/how-can-i-update-window-location-hash-without-jumping-the-document
+            // adding parameter to url via javascript
+            if(history && history.pushState) {
+                history.pushState(null, null, '#/' + table);
+            } else {
+                if (location) {
+                    location.hash = '#/' + table;
+                }
+            }
         }
     }
     // activate current entry
-    document.getElementById("cur_" + table).classList.add(activeClass);
-    // got ram here too
-    table = null;
-    return true;
-}
+    if (document) {
+        document.getElementById("cur_" + table).classList.add(activeClass);
+        // got ram here too
+        table = null;
+        return true;
+    }
+};
