@@ -45,7 +45,7 @@ function exportCSVFile(headers, items, fileTitle) {
 function giveMeCSV(jsonData, jsonHeaders) {
     var itemsFormatted = [];
     // format the data
-    jsonData.forEach((item) => {
+    jsonData.forEach(function(item) {
         itemsFormatted.push({
             model: item.model.replace(/,/g, ''), // remove commas to avoid errors,
             chargers: item.chargers,
