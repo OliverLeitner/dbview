@@ -6,7 +6,6 @@
  * @param {*} gridname 
  */
 function loadTableToGrid(gridhook, datapath, tablename, gridname) {
-    console.log(datapath);
     gridhook.tableLoaded = function () { this.renderGrid(gridname, "datagrid"); };
     gridhook.loadJSON(datapath + "?table=" + tablename);
 }

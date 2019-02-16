@@ -15,7 +15,10 @@ var stateHandler = function (className, activeClass, eventType) {
                 if (elements) {
                     var arrayLength = elements.length;
                     for (var i = 0; i < arrayLength; i++) {
-                        elements[i].classList.remove(activeClass);
+                        if (elements[i].classList.contains(activeClass)) {
+                            elements[i].classList.remove(activeClass);
+                            break;
+                        }
                     }
                     // free some mem
                     elements = null;
