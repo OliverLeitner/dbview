@@ -9,6 +9,14 @@
 var stateHandler = function (className, subClassName, activeClass, subActiveClass, eventType) {
     document.addEventListener(eventType, function(event) {
         if (event.target) {
+
+            // remove any existing insert form
+            if (parent.document.getElementById("insertform") !== null) {
+                var datadocument = parent.document.getElementById("mainarticle");
+                var insertForm = parent.document.getElementById("insertform");
+                datadocument.removeChild(insertForm);
+            }
+
             if (event.target.parentElement.classList.contains(className)) {
                 var elements = document.getElementsByClassName(className);
                 // remove active class from all li's
