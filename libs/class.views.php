@@ -209,7 +209,7 @@ class ViewManager
             if ($skey !== "type" && $skey !== "table_name") {
                 $mainkeeper["metadata"][$citer]["values"][$skey] = null;
                 if ($type !== "in_menu" && $type !== "selector_field" && $type !== "enum") {
-                    $mainkeeper["metadata"][$citer]["values"] = $subdata[$key];
+                   $mainkeeper["metadata"][$citer]["values"] = $subdata[$key];
                 }
                 if ($type === "table" || $type === "enum") {
                     array_map(function ($sskey, $ssval) use (&$mainkeeper, &$skey, &$citer) {

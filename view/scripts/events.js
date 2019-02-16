@@ -6,7 +6,7 @@
  * @param {*} className the name of the class to get elements by
  * @param {*} eventType the event we are listening for
  */
-var stateHandler = function (className, activeClass, eventType) {
+var stateHandler = function (className, subClassName, activeClass, subActiveClass, eventType) {
     document.addEventListener(eventType, function(event) {
         if (event.target) {
             if (event.target.parentElement.classList.contains(className)) {
@@ -26,12 +26,34 @@ var stateHandler = function (className, activeClass, eventType) {
                 // add active class to current li
                 if (event.target.parentElement) {
                     event.target.parentElement.classList.add([activeClass]);
-                    var table = event.target.parentElement.id.split("_")[1];
+                    var table_name = event.target.parentElement.id.split("_")[1];
                     // get the data for the body
-                    if (editableGrid && table) {
-                        loadTableToGrid(editableGrid, "data.php", table, "datatable");
-                        table = null;
+                    if (editableGrid && table_name) {
+                        loadTableToGrid(editableGrid, "data.php", table_name, "datatable");
                     }
+                }
+            }
+
+            // submenu form activation
+            if (event.target.parentElement.classList.contains(subClassName)) {
+                var elements = document.getElementsByClassName(subActiveClass);
+                if (elements) {
+                    var arrayLength = elements.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        if (elements[i].classList.contains(subActiveClass)) {
+                            elements[i].classList.remove(subActiveClass);
+                            break;
+                        }
+                    }
+                    // free some mem
+                    elements = null;
+                }
+                // add active class to current li
+                if (event.target.parentElement) {
+                    event.target.parentElement.classList.add([subActiveClass]);
+                    // load the form
+                    var table_name = event.target.parentElement.parentElement.id.split("_")[1];
+                    loadForm(table_name);
                 }
             }
         }

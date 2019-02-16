@@ -1,6 +1,5 @@
 /* main stylesheet file */
 @charset "UTF-8";
-
 html {
     body {
         background-color: #fff;
@@ -66,25 +65,49 @@ html {
                     }
 
                     ul.menu {
-                        width: 100%;
                         padding: 0;
                         list-style-type: none;
 
-                        li {
+                        li.menuitem {
                             line-height: 2em;
                             border-bottom: 1px dotted #000;
-                            padding-left: 10px;
-                            padding-right: 10px;
 
                             a {
-                                display:block;
+                                display: block;
                                 text-decoration: none;
                                 color: #000;
+                                padding-left: 12px;
+                            }
+
+                            ul.submenu {
+                                padding: 0;
+                                list-style-type: none;
+                                visibility: hidden;
+                                display: none;
+                                li {
+                                    background-color: #fff;
+                                    a {
+                                        padding-left: 24px;
+                                        border-left: 4px solid #f2fffb;
+                                    }
+                                }
+                                li:hover, li.subactive {
+                                    a {
+                                        background-color: #f2fffb;
+                                        border-left: 4px solid #ccc;
+                                    }
+                                }
                             }
                         }
 
                         li.active, li:hover {
-                            background-color: aquamarine;
+                            background-color: #7fffd4;
+                        }
+                        li.active {
+                            ul.submenu {
+                                visibility: visible;
+                                display: block;
+                            }
                         }
                     }
                 }
@@ -95,6 +118,10 @@ html {
                 top: 10px;
                 left: 194px;
                 bottom: 10px;
+
+                #insertform {
+                    padding-bottom: 30px;
+                }
             }
 
             article >* {
