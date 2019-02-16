@@ -1,3 +1,4 @@
+"use strict";
 /**
  * a simple event listener specific to certain element classes
  * TODO: split and generalize
@@ -11,11 +12,10 @@ function stateHandler(className = null, activeClass = null, eventType = null) {
             // remove active class from all li's
             if (elements) {
                 const arrayLength = elements.length;
-                for (i = 0; i < arrayLength; i++) {
+                for (let i = 0; i < arrayLength; i++) {
                     elements[i].classList.remove(activeClass);
                 }
                 // free some mem
-                delete arrayLength;
                 elements = null;
             }
             // add active class to current li
@@ -44,7 +44,6 @@ function routing(className = null, activeClass = null, table_name = "") {
             elements[i].classList.remove(activeClass);
         }
         // free em'
-        delete arrayLength;
         elements = null;
     }
     // activate the correct menu entry
@@ -52,7 +51,7 @@ function routing(className = null, activeClass = null, table_name = "") {
     if (window.location.hash) {
         // if we got a param, add it to the request
         let urlparam = window.location.hash;
-        param = urlparam.split("/")[1];
+        let param = urlparam.split("/")[1];
         table = param;
         loadTableToGrid(editableGrid,"data.php",table,"datatable");
     } else {
