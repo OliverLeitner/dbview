@@ -57,7 +57,7 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                     event.target.parentElement.classList.add([subActiveClass]);
                     // load the form
                     if (parent.document.getElementById("insertform")) {
-                        parent.document.getElementById("mainarticle")
+                        document.getElementById("insertform").parentNode
                         .removeChild(
                             parent.document.getElementById("insertform")
                         );
@@ -77,8 +77,9 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
  * @param {*} className the name of the ul class of the menu
  * @param {*} activeClass the class that highlights the current entry
  */
-var routing = function (className, activeClass, table_name) {
+var routing = function (className, subClassName, activeClass, subActiveClass, table_name) {
     // unselect currently selected menu entry, if avail
+    var subparam = null;
     var elements = document.getElementsByClassName(className);
     if (elements) {
         var arrayLength = elements.length;
@@ -97,8 +98,9 @@ var routing = function (className, activeClass, table_name) {
         var urlparam = window.location.hash;
         var param = urlparam.split("/")[1];
         if (param && table && editableGrid) {
-        table = param;
+            table = param;
             loadTableToGrid(editableGrid,"data.php",table,"datatable");
+            subparam = urlparam.split("/")[2];
         }
     } else {
         // fallback, if no route supplied
@@ -118,6 +120,14 @@ var routing = function (className, activeClass, table_name) {
     // activate current entry
     if (document) {
         document.getElementById("cur_" + table).classList.add(activeClass);
+        if (subparam !== null) {
+            if (document.getElementsByClassName(subClassName)) {
+                    var submenu = document.getElementById("submenu_" + table);
+                    var elem = submenu.getElementsByClassName(subClassName)[0];
+                    elem.classList.add(subActiveClass);
+            }
+            loadForm(table);
+        }
         // got ram here too
         table = null;
         return true;
