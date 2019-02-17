@@ -27,9 +27,6 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                 if (event.target.parentElement) {
                     event.target.parentElement.classList.add([activeClass]);
                     var table_name = event.target.parentElement.id.split("_")[1];
-                    if (parent.document.getElementById("insertform")) {
-                        parent.document.getElementById("mainarticle").removeChild(parent.document.getElementById("insertform"));
-                    }
                     // get the data for the body
                     if (editableGrid && table_name) {
                         loadTableToGrid(editableGrid, "data.php", table_name, "datatable");
