@@ -17,6 +17,10 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                     for (var i = 0; i < arrayLength; i++) {
                         if (elements[i].classList.contains(activeClass)) {
                             elements[i].classList.remove(activeClass);
+                            if (document.getElementById("insertform")) {
+                                var insertForm = document.getElementById("insertform");
+                                insertForm.parentNode.removeChild(insertForm);
+                            }
                             break;
                         }
                     }
