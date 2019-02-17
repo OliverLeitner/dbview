@@ -48,8 +48,6 @@
             <p>my footer</p>
         </footer>
     </div>
-    <!-- only need to load jquery if cross table content in a dropdown is used on editing... -->
-    <!-- config.json "values" -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="scripts/editablegrid/editablegrid.js"></script>
     <script src="scripts/editablegrid/editablegrid_renderers.js"></script>
@@ -69,7 +67,7 @@
             window.routing &&
             typeof window.stateHandler === 'function' &&
             typeof window.routing === 'function'
-           ) {
+        ) {
             window.stateHandler('menuitem', 'submenuitem', 'active', 'subactive', 'click');
             // if one enters url with params in browser, route via js
             window.routing('menuitem', 'submenuitem', 'active', 'subactive', '{{ tables[0]["name"] }}');

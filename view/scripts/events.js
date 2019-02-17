@@ -35,27 +35,22 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                     if (editableGrid && table_name) {
                         loadTableToGrid(editableGrid, "data.php", table_name, "datatable");
                     }
-                }
-            }
-
-            // submenu form activation
-            if (event.target.parentElement.classList.contains(subClassName)) {
-                var elements = document.getElementsByClassName(subActiveClass);
-                if (elements) {
-                    var arrayLength = elements.length;
-                    for (var i = 0; i < arrayLength; i++) {
-                        if (elements[i].classList.contains(subActiveClass)) {
-                            elements[i].classList.remove(subActiveClass);
-                            break;
+                    var subElements = document.getElementsByClassName(subClassName);
+                    var subElementsLength = subElements.length;
+                    if (subElementsLength > 0) {
+                        for (var i = 0; i < subElementsLength; i++) {
+                            if (subElements[i].classList.contains(subActiveClass)) {
+                                subElements[i].classList.remove(subActiveClass);
+                                break;
+                            }
                         }
                     }
-                    // free some mem
-                    elements = null;
                 }
-                // add active class to current li
+            }
+            // submenu form activation
+            if (event.target.parentElement.classList.contains(subClassName)) {
                 if (event.target.parentElement) {
                     event.target.parentElement.classList.add([subActiveClass]);
-                    // load the form
                     if (parent.document.getElementById("insertform")) {
                         document.getElementById("insertform").parentNode
                         .removeChild(
@@ -122,14 +117,14 @@ var routing = function (className, subClassName, activeClass, subActiveClass, ta
         document.getElementById("cur_" + table).classList.add(activeClass);
         if (subparam !== null) {
             if (document.getElementsByClassName(subClassName)) {
-                    var submenu = document.getElementById("submenu_" + table);
-                    var elem = submenu.getElementsByClassName(subClassName)[0];
+                var submenu = document.getElementById("submenu_" + table);
+                var elem = submenu.getElementsByClassName(subClassName)[0];
+                // only activate submenu entry if hash param checks
+                if (subparam === "insert") {
                     elem.classList.add(subActiveClass);
+                    loadForm(table);
+                }
             }
-            loadForm(table);
         }
-        // got ram here too
-        table = null;
-        return true;
     }
 };
