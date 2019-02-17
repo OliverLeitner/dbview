@@ -9,14 +9,6 @@
 var stateHandler = function (className, subClassName, activeClass, subActiveClass, eventType) {
     document.addEventListener(eventType, function(event) {
         if (event.target) {
-
-            // remove any existing insert form
-            if (parent.document.getElementById("insertform") !== null) {
-                var datadocument = parent.document.getElementById("mainarticle");
-                var insertForm = parent.document.getElementById("insertform");
-                datadocument.removeChild(insertForm);
-            }
-
             if (event.target.parentElement.classList.contains(className)) {
                 var elements = document.getElementsByClassName(className);
                 // remove active class from all li's
@@ -35,6 +27,9 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                 if (event.target.parentElement) {
                     event.target.parentElement.classList.add([activeClass]);
                     var table_name = event.target.parentElement.id.split("_")[1];
+                    if (parent.document.getElementById("insertform")) {
+                        parent.document.getElementById("mainarticle").removeChild(parent.document.getElementById("insertform"));
+                    }
                     // get the data for the body
                     if (editableGrid && table_name) {
                         loadTableToGrid(editableGrid, "data.php", table_name, "datatable");
@@ -60,6 +55,12 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
                 if (event.target.parentElement) {
                     event.target.parentElement.classList.add([subActiveClass]);
                     // load the form
+                    if (parent.document.getElementById("insertform")) {
+                        parent.document.getElementById("mainarticle")
+                        .removeChild(
+                            parent.document.getElementById("insertform")
+                        );
+                    }
                     var table_name = event.target.parentElement.parentElement.id.split("_")[1];
                     loadForm(table_name);
                 }

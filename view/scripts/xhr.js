@@ -1,10 +1,10 @@
 // from: https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/before()/before().md
 (function (arr) {
     arr.forEach(function (item) {
-        if (item.hasOwnProperty('before')) {
+        if (item.hasOwnProperty('prepend')) {
             return;
         }
-        Object.defineProperty(item, 'before', {
+        Object.defineProperty(item, 'prepend', {
             configurable: true,
             enumerable: true,
             writable: true,
@@ -47,7 +47,7 @@ function loadForm(table_name) {
         if (request.status >= 200 && request.status < 400) {
             var resp = request.response;
             // prepend form to document
-            document.getElementById("datatable").before(resp.body.children[0]);
+            document.getElementById("datatable").prepend(resp.body.children[0]);
         } else {
             // output error info
             console.log("something went wrong");
