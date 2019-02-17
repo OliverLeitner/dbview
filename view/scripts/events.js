@@ -122,7 +122,6 @@ var routing = function (className, subClassName, activeClass, subActiveClass, ta
                 // only activate submenu entry if hash param checks
                 if (subparam === "insert") {
                     elem.classList.add(subActiveClass);
-                    loadForm(table);
                 }
             }
         }
