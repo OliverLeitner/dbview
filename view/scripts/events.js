@@ -11,10 +11,10 @@ var stateHandler = function (className, subClassName, activeClass, subActiveClas
         if (event.target) {
             if (event.target.parentElement.classList.contains(className)) {
                 var elements = document.getElementsByClassName(className);
+                var elementsLength = elements.length;
                 // remove active class from all li's
-                if (elements) {
-                    var arrayLength = elements.length;
-                    for (var i = 0; i < arrayLength; i++) {
+                if (elementsLength > 0) {
+                    for (var i = 0; i < elementsLength; i++) {
                         if (elements[i].classList.contains(activeClass)) {
                             elements[i].classList.remove(activeClass);
                             if (document.getElementById("insertform")) {

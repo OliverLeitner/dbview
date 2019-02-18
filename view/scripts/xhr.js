@@ -53,7 +53,7 @@ function loadTableToGrid(gridhook, datapath, tablename, gridname) {
 function loadForm(table_name) {
     if (document) {
         var request = new XMLHttpRequest();
-        // getting response as dom copy
+        // getting response as dom copy (avoid caching)
         request.open('GET', 'form.php?table=' + table_name, true);
         request.responseType = 'document';
         request.onload = function () {
@@ -67,14 +67,14 @@ function loadForm(table_name) {
                     return true;
                 }
             } else {
-                // output error info
                 console.log("something went wrong");
-                console.log(request);
+                console.log(request.statusText);
                 return false;
             }
         };
         request.onerror = function () {
-            // There was a connection error of some sort
+            console.log("an error occured");
+            console.log(request.statusText);
         };
         request.send();
     }
